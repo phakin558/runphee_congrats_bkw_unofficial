@@ -1,0 +1,16 @@
+# Local-only admin tools and source data
+admin/
+admin_backups/
+data_images.json
+ocr_text.json
+image_metadata.json
+facebook_images.json
+institution_logos.json
+album_sources.json
+site_settings.json
+
+# Local development/build output
+node_modules/
+dist/
+*.pyc
+__pycache__/

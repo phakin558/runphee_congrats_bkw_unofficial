@@ -1,0 +1,14 @@
+node_modules/
+dist/
+admin_backups/
+__pycache__/
+*.pyc
+
+# Local source files used only by the admin tools
+/data_images.json
+/ocr_text.json
+/image_metadata.json
+/facebook_images.json
+/institution_logos.json
+/album_sources.json
+/site_settings.json
