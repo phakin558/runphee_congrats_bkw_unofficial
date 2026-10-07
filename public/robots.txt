@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://runphee-congrats-bkw-unofficial.vercel.app/sitemap.xml
