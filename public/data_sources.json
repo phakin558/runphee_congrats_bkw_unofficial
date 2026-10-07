@@ -1,6 +1,6 @@
 {
-  "imageMetadata": "/image_metadata.json",
-  "facebookImages": "/facebook_images.json",
-  "institutionLogos": "/institution_logos.json",
-  "albumSources": "/album_sources.json"
+  "imageMetadata": "./image_metadata.json",
+  "facebookImages": "./facebook_images.json",
+  "institutionLogos": "./institution_logos.json",
+  "albumSources": "./album_sources.json"
 }

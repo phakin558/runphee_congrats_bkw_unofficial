@@ -3,7 +3,7 @@ import { logoUrl, setLogoOverrides } from './logos.js';
 const esc = s => String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 document.querySelector('#app').innerHTML='<main class="loading-shell"><div class="loading-orbit"></div><h1>กำลังเตรียมสถิติ</h1><p>กำลังโหลดข้อมูลรุ่นพี่และจัดเรียงผลลัพธ์...</p></main>';
 let records=[], albums={}, years=[], selected='all', chartMode='institution';
-fetch('/data_sources.json').then(r=>r.ok?r.json():{}).catch(()=>({})).then(sources=>{const base=sources.baseUrl||'';const get=(key,fallback)=>fetch(base+(sources[key]||fallback)).then(r=>r.ok?r.json():{}).catch(()=>({}));return Promise.all([get('imageMetadata','/image_metadata.json'),get('albumSources','/album_sources.json'),get('institutionLogos','/institution_logos.json')])}).then(([data,albumData,logos])=>{
+fetch('./data_sources.json').then(r=>r.ok?r.json():{}).catch(()=>({})).then(sources=>{const base=sources.baseUrl||'';const get=(key,fallback)=>{const urls=[base+(sources[key]||fallback),fallback].filter((url,index,list)=>url&&!list.slice(0,index).includes(url));return urls.reduce((promise,url)=>promise.then(value=>value??fetch(url).then(r=>r.ok?r.json():null).catch(()=>null)),Promise.resolve(null)).then(value=>value||{})};return Promise.all([get('imageMetadata','./image_metadata.json'),get('albumSources','./album_sources.json'),get('institutionLogos','./institution_logos.json')])}).then(([data,albumData,logos])=>{
   records=Array.isArray(data)?data.filter(r=>r&&typeof r==='object'):[];
   albums=albumData&&typeof albumData==='object'?albumData:{};
   years=[...new Set(records.map(r=>r.year).filter(Boolean))].sort((a,b)=>b-a);
