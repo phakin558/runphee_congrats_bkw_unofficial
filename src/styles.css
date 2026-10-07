@@ -145,6 +145,17 @@ button:active,a:active { transform: translateY(0) scale(.98); }
 .detail-content details p { white-space:pre-wrap; line-height:1.6; }
 .detail-source { display:inline-block; margin-top:18px; color:#3d4db7; font-weight:700; text-decoration:underline; }
 .site-credit { padding:24px 16px 30px; color:#94a3b8; text-align:center; font-size:.78rem; letter-spacing:.02em; }
+.site-purpose { width:min(720px,100%); margin:28px 0 0; padding:0; border:1px solid rgba(255,255,255,.25); border-radius:18px; background:rgba(15,23,42,.16); text-align:left; overflow:hidden; }
+.site-purpose summary { cursor:pointer; padding:15px 20px; color:#fff; font-weight:800; font-size:1.05rem; list-style-position:inside; }
+.site-purpose summary::marker { color:#fbbf24; }
+.site-purpose p { margin:0; padding:0 20px 18px; color:rgba(255,255,255,.82); line-height:1.7; font-size:.9rem; }
+.site-contact { display:flex; justify-content:flex-start; align-items:center; flex-wrap:wrap; gap:8px 16px; width:100%; margin-bottom:12px; color:rgba(255,255,255,.82); font-size:.82rem; }
+.site-contact a { display:inline-flex; align-items:center; gap:6px; color:#64748b; text-decoration:none; }
+.site-contact a { color:rgba(255,255,255,.9); }
+.site-contact a:hover { color:#fbbf24; }
+.social-icon { display:inline-grid; place-items:center; width:19px; height:19px; border-radius:6px; color:#fff; font-weight:800; font-family:Arial,sans-serif; font-size:14px; }
+.instagram-icon { background:linear-gradient(135deg,#833ab4,#fd1d1d 55%,#fcb045); }
+.facebook-icon { background:#1877f2; border-radius:50%; font-size:16px; }
 @keyframes statsCtaFloat { 0%,100% { box-shadow:0 12px 30px rgba(0,0,0,.22); } 50% { box-shadow:0 16px 38px rgba(80,220,255,.38); } }
 @keyframes orbitSpin { to { transform:rotate(360deg); } }
 @keyframes detailIn { from { opacity:0; transform:translateY(10px) scale(.98); } to { opacity:1; transform:translateY(0) scale(1); } }

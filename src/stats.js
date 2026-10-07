@@ -1,7 +1,7 @@
 import './styles.css';
 import { logoUrl, setLogoOverrides } from './logos.js';
 const esc = s => String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-document.querySelector('#app').innerHTML='<main class="loading-shell"><div class="loading-orbit"></div><h1>กำลังเตรียมสถิติ</h1><p>กำลังโหลดข้อมูลรุ่นพี่และจัดเรียงผลลัพธ์...</p></main>';
+document.querySelector('#app').innerHTML='<main class="loading-shell"><div class="loading-orbit"></div><h1>กำลังเตรียมข้อมูลสถิติ</h1><p>กำลังโหลดและจัดเรียงข้อมูลการศึกษาต่อ...</p></main>';
 let records=[], albums={}, years=[], selected='all', chartMode='institution';
 fetch('./data_sources.json').then(r=>r.ok?r.json():{}).catch(()=>({})).then(sources=>{const base=sources.baseUrl||'';const get=(key,fallback)=>{const configured=import.meta.env.DEV?fallback:base+(sources[key]||fallback);const urls=[configured,fallback].filter((url,index,list)=>url&&!list.slice(0,index).includes(url));return urls.reduce((promise,url)=>promise.then(value=>value??fetch(url).then(r=>r.ok?r.json():null).catch(()=>null)),Promise.resolve(null)).then(value=>value||{})};return Promise.all([get('imageMetadata','./image_metadata.json'),get('albumSources','./album_sources.json'),get('institutionLogos','./institution_logos.json')])}).then(([data,albumData,logos])=>{
   records=Array.isArray(data)?data.filter(r=>r&&typeof r==='object'):[];
@@ -23,4 +23,10 @@ function render(){
   document.querySelector('.stats-wrap').insertAdjacentHTML('beforeend',`<section class="pie-panel"><div class="pie-heading"><div><h2>สัดส่วนข้อมูลแบบ Pie Chart</h2><p>เลือกมุมมองที่ต้องการเปรียบเทียบ</p></div><select id="chart-mode"><option value="institution" ${chartMode==='institution'?'selected':''}>ตามมหาวิทยาลัย / สถาบัน</option><option value="faculty" ${chartMode==='faculty'?'selected':''}>ตามคณะ</option></select></div><div class="pie-layout"><div class="pie-chart" style="background:conic-gradient(${stops})"><span>${chartTotal}<small>รายการ</small></span></div><div class="pie-legend">${chartLegend||'<p>ยังไม่มีข้อมูล</p>'}</div></div></section><section class="insight-grid"><div class="insight-panel"><h2>ภาพรวมตามประเภทสถาบัน</h2><p>ช่วยดูว่ารุ่นพี่กระจายอยู่ในสถาบันประเภทใด</p><div class="insight-types">${typeCards}</div></div><div class="insight-panel"><h2>แนวโน้มจำนวนผู้ติดรายปี</h2><p>เปรียบเทียบจำนวนรูปในแต่ละปี</p><div class="trend-list">${trend}</div></div></section>`);
   document.querySelector('#stats-year').onchange=e=>{selected=e.target.value;render()};
   document.querySelector('#chart-mode').onchange=e=>{chartMode=e.target.value;render()};
+  const hero=document.querySelector('.hero-inner');if(hero){hero.querySelector('h1').textContent='สถิติการศึกษาต่อ';hero.querySelector('p').textContent='เลือกดูข้อมูลแยกตามปี หรือรวมข้อมูลทุกปี'}
+  const heading=document.querySelector('.ranking-title h2');if(heading)heading.textContent=selected==='all'?'รวมทุกปี: มหาวิทยาลัย/สถาบัน':`ปี ${selected}: มหาวิทยาลัย/สถาบัน`;
+  const rankingNote=document.querySelector('.ranking-title p');if(rankingNote)rankingNote.textContent='จำนวนและสัดส่วนของรายการที่รวบรวมได้ในช่วงที่เลือก';
+  const pieTitle=document.querySelector('.pie-heading h2');if(pieTitle)pieTitle.textContent='สัดส่วนข้อมูล';
+  const typeNote=document.querySelector('.insight-panel p');if(typeNote)typeNote.textContent='จำแนกข้อมูลตามประเภทของสถาบัน';
+  const trendTitle=[...document.querySelectorAll('.insight-panel h2')].find(x=>x.textContent.includes('แนวโน้ม'));if(trendTitle){trendTitle.textContent='แนวโน้มจำนวนรายการรายปี';trendTitle.nextElementSibling.textContent='เปรียบเทียบจำนวนข้อมูลที่รวบรวมได้ในแต่ละปี'}
 }
