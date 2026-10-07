@@ -58,6 +58,10 @@ class Manager:
             number=int(re.search(r'_(\d+)(?:\.[^.]+)?$',path).group(1)) if re.search(r'_(\d+)(?:\.[^.]+)?$',path) else 0
             return (int(record.get('year',0) or 0), path.rsplit('/',1)[0], number, path)
         self.records.sort(key=key)
+
+    def sort_records_by_year(self):
+        """เรียงข้อมูลจากปีเก่าไปใหม่ โดยคงลำดับเดิมภายในปีเดียวกันไว้"""
+        self.records.sort(key=lambda record: int(record.get('year', 0) or 0))
     def refresh_records(self):
         self.record_list.delete(0,tk.END)
         for i,r in enumerate(self.records): self.record_list.insert(tk.END,f'{i+1:03} | {r.get("year","")} | {r.get("institution","ไม่ระบุ")} | {r.get("faculty","ไม่ระบุ")}')
@@ -92,7 +96,10 @@ class Manager:
         try:
             record=self.form_record()
             if any(self.record_key(old)==self.record_key(record) for old in self.records): raise ValueError('path/URL นี้มีอยู่แล้ว ระบบจะไม่เขียนทับรายการเดิม')
-            self.records.append(record); self.selected_key=self.record_key(record); self.write_records(); self.refresh_records(); self.selected_index=self.find_selected_index(); self.record_list.selection_set(self.selected_index); messagebox.showinfo('สำเร็จ','เพิ่มรายการใหม่และบันทึกแล้ว')
+            # ให้ปีเก่าสุดอยู่ต้นไฟล์ และหมายเลขลำดับขยับตามตำแหน่งใหม่อัตโนมัติ
+            self.records.append(record)
+            self.sort_records_by_year()
+            self.selected_key=self.record_key(record); self.write_records(); self.refresh_records(); self.selected_index=self.find_selected_index(); self.record_list.selection_set(self.selected_index); messagebox.showinfo('สำเร็จ','เพิ่มรายการใหม่และบันทึกแล้ว')
         except ValueError as e:messagebox.showerror('ข้อมูลไม่ถูกต้อง',str(e))
     def update_record(self):
         current=self.find_selected_index()
@@ -100,7 +107,9 @@ class Manager:
         try:
             updated=self.form_record(self.records[current]); duplicate=any(i!=current and self.record_key(old)==self.record_key(updated) for i,old in enumerate(self.records))
             if duplicate: raise ValueError('path/URL นี้มีอยู่แล้ว ระบบจะไม่เขียนทับรายการอื่น')
-            self.records[current]=updated; self.selected_key=self.record_key(updated); self.write_records(); self.refresh_records(); self.selected_index=self.find_selected_index(); self.record_list.selection_set(self.selected_index); messagebox.showinfo('สำเร็จ','แก้ไขรายการเดิมและบันทึกลง image_metadata.json แล้ว')
+            self.records[current]=updated
+            self.sort_records_by_year()
+            self.selected_key=self.record_key(updated); self.write_records(); self.refresh_records(); self.selected_index=self.find_selected_index(); self.record_list.selection_set(self.selected_index); messagebox.showinfo('สำเร็จ','แก้ไขรายการเดิมและบันทึกลง image_metadata.json แล้ว')
         except ValueError as e:messagebox.showerror('ข้อมูลไม่ถูกต้อง',str(e))
     def delete_record(self):
         current=self.find_selected_index()
