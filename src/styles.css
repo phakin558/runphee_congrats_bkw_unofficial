@@ -12,7 +12,7 @@ a:hover,button:hover { transform: translateY(-2px); }
 button:active,a:active { transform: translateY(0) scale(.98); }
 .site-hero { background: linear-gradient(120deg,#17114d,#283b91 55%,#1678b7); color: white; }
 .hero-inner { max-width: 1240px; margin: auto; padding: clamp(42px,8vw,86px) 24px clamp(38px,7vw,70px); }
-.hero-inner h1 { margin: 12px 0 16px; font-size: clamp(2.25rem,6vw,4.8rem); line-height:1.08; font-weight: 900; letter-spacing: -0.045em; }
+.hero-inner h1 { margin: 12px 0 16px; font-size: clamp(2.0rem,6vw,4.0rem); line-height:1.08; font-weight: 900; letter-spacing: -0.045em; }
 .hero-inner h1 em { color:#9edfff; font-style:normal; }
 .hero-inner p { margin: 0; opacity: .86; font-size: 1.05rem; }
 .hero-lead { max-width: 640px; line-height:1.7; }
