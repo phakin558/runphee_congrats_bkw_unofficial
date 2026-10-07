@@ -1,5 +1,34 @@
 {
   "bkwLogo": "/bkw_logo.png",
   "instagram": "https://instagram.com/phakin_bbx",
-  "facebook": "https://facebook.com/PhakinCharatsri"
+  "facebook": "https://www.facebook.com/pakin.jarussri/",
+  "instagramLogo": "https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png?utm_source=th.wikipedia.org&utm_campaign=index&utm_content=original",
+  "facebookLogo": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/250px-Facebook_f_logo_%282019%29.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail",
+  "heroImages": [
+    "https://scontent.fbkk28-1.fna.fbcdn.net/v/t39.30808-6/485160239_676954778188864_3233031221545795810_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1154&ctp=s2048x1154&_nc_cat=100&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeFor8l206nsjRhKcVJmZEsjWXJxyzUX8xNZcnHLNRfzE4R0PQo_5wLXmNmYfqDcHQBdpdwJRrkAbEWusAEPV5dF&_nc_ohc=tnkjrek91WQQ7kNvwEIXjq6&_nc_oc=Adol6Oxmg-8eMU7vY6ZXX5CBklVAuC3423MmZblOa7pNOkHHyeB6xeQXVr960fiQ8a8fO3rRUsB-K-qDs1pxMGko&_nc_zt=23&_nc_ht=scontent.fbkk28-1.fna&_nc_gid=UufF2JMPdUQfeaBZxVcz0A&_nc_ss=7b2a8&oh=00_AQPmbLdCJKittZm4NnZ5_VwBidVkG4hkSrymuwIZNid-_g&oe=6ACBD3EA",
+    "https://scontent.fbkk28-1.fna.fbcdn.net/v/t39.99422-6/834273042_1788201512096556_3519303633047705144_n.png?stp=dst-jpg_tt6&cstp=mx2048x1154&ctp=s2048x1154&_nc_cat=105&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeHrm_qylE1StUrAVR2Nv6roech_aAsHwmh5yH9oCwfCaBvac00_Bjj9Hb_oOelaXd80ztPDXuDyC6nTNUAVJKmF&_nc_ohc=zYefCIT-0ksQ7kNvwHhV-tj&_nc_oc=Ado7Jm1tFN-UN8SoiBES62m0p6hveuTsy-4b0HWn0oynEQ-5vinOtXiHAR2FuK-dow62PUKkgY3xNICIi7owl163&_nc_zt=14&_nc_ht=scontent.fbkk28-1.fna&_nc_gid=BKjHw-X4YOtyWNuQ1K3DWA&_nc_ss=7b2a8&oh=00_AQPhSXz8kbKHb2SL4XDkxIrjsnfN6CMOeBy4H0dGDUZi8g&oe=6ACBE73B",
+    "https://scontent.fbkk28-1.fna.fbcdn.net/v/t39.30808-6/639807326_941715905046082_720319554553533041_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1154&ctp=s2048x1154&_nc_cat=107&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeGoJBklFlf4L20sl5kinH23azp6F7QeYcxrOnoXtB5hzG36TdSBvoAQBJTEbtr4rSvKj63fEop1qlOt9_zUqXi5&_nc_ohc=WhGqSKyxlWAQ7kNvwEwNl-3&_nc_oc=AdoYzaM8QInCUgW73xSWVgxycRcVXuqaWxBLiUZ1mk25OHV-XS87bs4o86zS-idO7AxY-BKfTzvGm0n0L3icarIb&_nc_zt=23&_nc_ht=scontent.fbkk28-1.fna&_nc_gid=k4AHaUZkjQN37OP8r4YBSg&_nc_ss=7b2a8&oh=00_AQOV_V-1NiZDUmDpUqO5rnF3L8TeNXtHiafzn8reypPuMg&oe=6ACBBA42"
+  ],
+  "heroOverlap": 24,
+  "heroCards": [
+    {
+      "src": "https://scontent.fbkk28-1.fna.fbcdn.net/v/t39.30808-6/485160239_676954778188864_3233031221545795810_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1154&ctp=s2048x1154&_nc_cat=100&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeFor8l206nsjRhKcVJmZEsjWXJxyzUX8xNZcnHLNRfzE4R0PQo_5wLXmNmYfqDcHQBdpdwJRrkAbEWusAEPV5dF&_nc_ohc=tnkjrek91WQQ7kNvwEIXjq6&_nc_oc=Adol6Oxmg-8eMU7vY6ZXX5CBklVAuC3423MmZblOa7pNOkHHyeB6xeQXVr960fiQ8a8fO3rRUsB-K-qDs1pxMGko&_nc_zt=23&_nc_ht=scontent.fbkk28-1.fna&_nc_gid=UufF2JMPdUQfeaBZxVcz0A&_nc_ss=7b2a8&oh=00_AQPmbLdCJKittZm4NnZ5_VwBidVkG4hkSrymuwIZNid-_g&oe=6ACBD3EA",
+      "zoom": 190,
+      "x": -30,
+      "y": 20
+    },
+    {
+      "src": "https://scontent.fbkk28-1.fna.fbcdn.net/v/t39.99422-6/834273042_1788201512096556_3519303633047705144_n.png?stp=dst-jpg_tt6&cstp=mx2048x1154&ctp=s2048x1154&_nc_cat=105&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeHrm_qylE1StUrAVR2Nv6roech_aAsHwmh5yH9oCwfCaBvac00_Bjj9Hb_oOelaXd80ztPDXuDyC6nTNUAVJKmF&_nc_ohc=zYefCIT-0ksQ7kNvwHhV-tj&_nc_oc=Ado7Jm1tFN-UN8SoiBES62m0p6hveuTsy-4b0HWn0oynEQ-5vinOtXiHAR2FuK-dow62PUKkgY3xNICIi7owl163&_nc_zt=14&_nc_ht=scontent.fbkk28-1.fna&_nc_gid=BKjHw-X4YOtyWNuQ1K3DWA&_nc_ss=7b2a8&oh=00_AQPhSXz8kbKHb2SL4XDkxIrjsnfN6CMOeBy4H0dGDUZi8g&oe=6ACBE73B",
+      "zoom": 190,
+      "x": -40,
+      "y": 15
+    },
+    {
+      "src": "https://scontent.fbkk28-1.fna.fbcdn.net/v/t39.30808-6/639807326_941715905046082_720319554553533041_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1154&ctp=s2048x1154&_nc_cat=107&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeGoJBklFlf4L20sl5kinH23azp6F7QeYcxrOnoXtB5hzG36TdSBvoAQBJTEbtr4rSvKj63fEop1qlOt9_zUqXi5&_nc_ohc=WhGqSKyxlWAQ7kNvwEwNl-3&_nc_oc=AdoYzaM8QInCUgW73xSWVgxycRcVXuqaWxBLiUZ1mk25OHV-XS87bs4o86zS-idO7AxY-BKfTzvGm0n0L3icarIb&_nc_zt=23&_nc_ht=scontent.fbkk28-1.fna&_nc_gid=k4AHaUZkjQN37OP8r4YBSg&_nc_ss=7b2a8&oh=00_AQOV_V-1NiZDUmDpUqO5rnF3L8TeNXtHiafzn8reypPuMg&oe=6ACBBA42",
+      "zoom": 170,
+      "x": -30,
+      "y": 20
+    }
+  ],
+  "heroCardWidth": 320
 }

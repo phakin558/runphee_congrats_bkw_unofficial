@@ -36,13 +36,23 @@ class Manager:
         t=self.logo_tab; t.grid_columnconfigure(0,weight=1); t.grid_columnconfigure(1,weight=2); t.grid_rowconfigure(1,weight=1)
         ttk.Label(t,text='เลือกสถาบัน → แก้ URL โลโก้ → กด “แก้ไขและบันทึกโลโก้ทันที”  (ใส่ URL รูปโดยตรง เช่น https://site.com/logo.png)',wraplength=1050).grid(row=0,column=0,columnspan=2,sticky='ew',padx=10,pady=10)
         self.school_logo_var=tk.StringVar(); ttk.Label(t,text='โลโก้โรงเรียน (path หรือ URL)').grid(row=1,column=0,sticky='w',padx=10,pady=5); ttk.Entry(t,textvariable=self.school_logo_var).grid(row=1,column=1,sticky='ew',padx=10,pady=5); ttk.Button(t,text='บันทึกโลโก้โรงเรียน',command=self.save_school_logo).grid(row=1,column=1,sticky='e',padx=10,pady=5)
-        self.instagram_var=tk.StringVar(); self.facebook_var=tk.StringVar()
+        self.instagram_var=tk.StringVar(); self.facebook_var=tk.StringVar(); self.instagram_logo_var=tk.StringVar(); self.facebook_logo_var=tk.StringVar(); self.hero_image_vars=[tk.StringVar() for _ in range(3)]; self.hero_zoom_vars=[tk.StringVar() for _ in range(3)]; self.hero_x_vars=[tk.StringVar() for _ in range(3)]; self.hero_y_vars=[tk.StringVar() for _ in range(3)]; self.hero_overlap_var=tk.StringVar(); self.hero_width_var=tk.StringVar()
         ttk.Label(t,text='Instagram URL').grid(row=2,column=0,sticky='w',padx=10,pady=5); ttk.Entry(t,textvariable=self.instagram_var).grid(row=2,column=1,sticky='ew',padx=10,pady=5)
-        ttk.Label(t,text='Facebook URL').grid(row=3,column=0,sticky='w',padx=10,pady=5); ttk.Entry(t,textvariable=self.facebook_var).grid(row=3,column=1,sticky='ew',padx=10,pady=5)
-        ttk.Button(t,text='บันทึกช่องทางติดต่อ',command=self.save_contact_links).grid(row=4,column=1,sticky='e',padx=10,pady=5)
-        t.grid_rowconfigure(5,weight=1)
-        self.logo_list=tk.Listbox(t,width=50,exportselection=False); self.logo_list.grid(row=5,column=0,sticky='nsew',padx=10,pady=8); self.logo_list.bind('<<ListboxSelect>>',self.on_logo_select)
-        f=ttk.Frame(t); f.grid(row=5,column=1,sticky='new',padx=10,pady=8); f.grid_columnconfigure(1,weight=1); self.logo_name=tk.StringVar(); self.logo_url=tk.StringVar()
+        ttk.Label(t,text='Instagram logo URL/path').grid(row=3,column=0,sticky='w',padx=10,pady=5); ttk.Entry(t,textvariable=self.instagram_logo_var).grid(row=3,column=1,sticky='ew',padx=10,pady=5)
+        ttk.Label(t,text='Facebook URL').grid(row=4,column=0,sticky='w',padx=10,pady=5); ttk.Entry(t,textvariable=self.facebook_var).grid(row=4,column=1,sticky='ew',padx=10,pady=5)
+        ttk.Label(t,text='Facebook logo URL/path').grid(row=5,column=0,sticky='w',padx=10,pady=5); ttk.Entry(t,textvariable=self.facebook_logo_var).grid(row=5,column=1,sticky='ew',padx=10,pady=5)
+        row=7
+        for index in range(3):
+            number=index+1
+            ttk.Label(t,text=f'รูปตัวอย่างหน้าแรก {number} (URL/path)').grid(row=row,column=0,sticky='w',padx=10,pady=5); ttk.Entry(t,textvariable=self.hero_image_vars[index]).grid(row=row,column=1,sticky='ew',padx=10,pady=5); row+=1
+            ttk.Label(t,text=f'รูป {number}: ซูม (%)').grid(row=row,column=0,sticky='w',padx=10,pady=5); ttk.Entry(t,textvariable=self.hero_zoom_vars[index]).grid(row=row,column=1,sticky='ew',padx=10,pady=5); row+=1
+            ttk.Label(t,text=f'รูป {number}: เลื่อน X/Y (px)').grid(row=row,column=0,sticky='w',padx=10,pady=5); xy=ttk.Frame(t); xy.grid(row=row,column=1,sticky='ew',padx=10,pady=5); ttk.Label(xy,text='X').pack(side='left'); ttk.Entry(xy,textvariable=self.hero_x_vars[index],width=8).pack(side='left',padx=(4,12)); ttk.Label(xy,text='Y').pack(side='left'); ttk.Entry(xy,textvariable=self.hero_y_vars[index],width=8).pack(side='left',padx=4); row+=1
+        ttk.Label(t,text='ระยะซ้อนทับการ์ด (px)').grid(row=row,column=0,sticky='w',padx=10,pady=5); ttk.Entry(t,textvariable=self.hero_overlap_var).grid(row=row,column=1,sticky='ew',padx=10,pady=5); row+=1
+        ttk.Label(t,text='ความกว้างการ์ดตัวอย่าง (px)').grid(row=row,column=0,sticky='w',padx=10,pady=5); ttk.Entry(t,textvariable=self.hero_width_var).grid(row=row,column=1,sticky='ew',padx=10,pady=5); row+=1
+        ttk.Button(t,text='บันทึกช่องทาง/โลโก้/รูปหน้าแรก',command=self.save_contact_links).grid(row=row,column=1,sticky='e',padx=10,pady=5); row+=1
+        t.grid_rowconfigure(row,weight=1)
+        self.logo_list=tk.Listbox(t,width=50,exportselection=False); self.logo_list.grid(row=row,column=0,sticky='nsew',padx=10,pady=8); self.logo_list.bind('<<ListboxSelect>>',self.on_logo_select)
+        f=ttk.Frame(t); f.grid(row=row,column=1,sticky='new',padx=10,pady=8); f.grid_columnconfigure(1,weight=1); self.logo_name=tk.StringVar(); self.logo_url=tk.StringVar()
         ttk.Label(f,text='ชื่อสถาบัน').grid(row=0,column=0,sticky='w',padx=(0,8),pady=8); ttk.Entry(f,textvariable=self.logo_name).grid(row=0,column=1,sticky='ew',pady=8)
         ttk.Label(f,text='URL โลโก้').grid(row=1,column=0,sticky='w',padx=(0,8),pady=8); ttk.Entry(f,textvariable=self.logo_url).grid(row=1,column=1,sticky='ew',pady=8)
         bar=ttk.Frame(f); bar.grid(row=2,column=0,columnspan=2,sticky='w',pady=14); ttk.Button(bar,text='เพิ่มโลโก้',command=self.add_logo).pack(side='left',padx=3); ttk.Button(bar,text='แก้ไขและบันทึกโลโก้ทันที',command=self.update_logo).pack(side='left',padx=3); ttk.Button(bar,text='ลบโลโก้',command=self.delete_logo).pack(side='left',padx=3); ttk.Button(bar,text='โหลดใหม่',command=self.load_logos).pack(side='left',padx=3)
@@ -50,11 +60,16 @@ class Manager:
     def load_all(self): self.load_records(); self.load_logos(); self.load_settings()
     def load_settings(self):
         self.settings=json.loads(SETTINGS.read_text(encoding='utf-8')) if SETTINGS.exists() else {'bkwLogo':'/bkw_logo.png'}
-        self.school_logo_var.set(self.settings.get('bkwLogo','/bkw_logo.png')); self.instagram_var.set(self.settings.get('instagram','https://instagram.com/phakin_bbx')); self.facebook_var.set(self.settings.get('facebook','https://facebook.com/PhakinCharatsri'))
+        self.school_logo_var.set(self.settings.get('bkwLogo','/bkw_logo.png')); self.instagram_var.set(self.settings.get('instagram','https://instagram.com/phakin_bbx')); self.instagram_logo_var.set(self.settings.get('instagramLogo','')); self.facebook_var.set(self.settings.get('facebook','https://facebook.com/PhakinCharatsri')); self.facebook_logo_var.set(self.settings.get('facebookLogo','')); cards=self.settings.get('heroCards',[]); cards=cards if isinstance(cards,list) else []; old_images=self.settings.get('heroImages',[]); old_images=old_images if isinstance(old_images,list) else []; [var.set((cards[i].get('src','') if i<len(cards) and isinstance(cards[i],dict) else (old_images[i] if i<len(old_images) else ''))) for i,var in enumerate(self.hero_image_vars)]; [var.set(str(cards[i].get('zoom',100) if i<len(cards) and isinstance(cards[i],dict) else 100)) for i,var in enumerate(self.hero_zoom_vars)]; [var.set(str(cards[i].get('x',0) if i<len(cards) and isinstance(cards[i],dict) else 0)) for i,var in enumerate(self.hero_x_vars)]; [var.set(str(cards[i].get('y',0) if i<len(cards) and isinstance(cards[i],dict) else 0)) for i,var in enumerate(self.hero_y_vars)]; self.hero_overlap_var.set(str(self.settings.get('heroOverlap',24))); self.hero_width_var.set(str(self.settings.get('heroCardWidth',190)))
     def save_school_logo(self):
         value=self.school_logo_var.get().strip() or '/bkw_logo.png'; self.settings['bkwLogo']=value; payload=json.dumps(self.settings,ensure_ascii=False,indent=2)+'\n'; SETTINGS.write_text(payload,encoding='utf-8'); PUBLIC.mkdir(exist_ok=True); (PUBLIC/'site_settings.json').write_text(payload,encoding='utf-8'); messagebox.showinfo('สำเร็จ','บันทึก path/URL โลโก้โรงเรียนแล้ว')
     def save_contact_links(self):
-        self.settings['instagram']=self.instagram_var.get().strip(); self.settings['facebook']=self.facebook_var.get().strip(); payload=json.dumps(self.settings,ensure_ascii=False,indent=2)+'\n'; SETTINGS.write_text(payload,encoding='utf-8'); PUBLIC.mkdir(exist_ok=True); (PUBLIC/'site_settings.json').write_text(payload,encoding='utf-8'); messagebox.showinfo('สำเร็จ','บันทึก URL Instagram และ Facebook แล้ว')
+        self.settings['instagram']=self.instagram_var.get().strip(); self.settings['instagramLogo']=self.instagram_logo_var.get().strip(); self.settings['facebook']=self.facebook_var.get().strip(); self.settings['facebookLogo']=self.facebook_logo_var.get().strip();
+        try:
+            self.settings['heroCards']=[{'src':self.hero_image_vars[i].get().strip(),'zoom':max(50,min(300,int(self.hero_zoom_vars[i].get().strip() or 100))),'x':max(-300,min(300,int(self.hero_x_vars[i].get().strip() or 0))),'y':max(-300,min(300,int(self.hero_y_vars[i].get().strip() or 0)))} for i in range(3) if self.hero_image_vars[i].get().strip()]
+            self.settings['heroOverlap']=max(0,min(80,int(self.hero_overlap_var.get().strip() or 24))); self.settings['heroCardWidth']=max(100,min(320,int(self.hero_width_var.get().strip() or 190)))
+        except ValueError:return messagebox.showerror('ข้อมูลไม่ถูกต้อง','ระยะซ้อนทับต้องเป็นตัวเลข 0-80 px')
+        payload=json.dumps(self.settings,ensure_ascii=False,indent=2)+'\n'; SETTINGS.write_text(payload,encoding='utf-8'); PUBLIC.mkdir(exist_ok=True); (PUBLIC/'site_settings.json').write_text(payload,encoding='utf-8'); messagebox.showinfo('สำเร็จ','บันทึกช่องทาง โลโก้ และรูปตัวอย่างหน้าแรกแล้ว')
     def load_records(self):
         # รักษาลำดับใน JSON เดิมไว้ เพื่อให้รายการใหม่ append ต่อท้ายจริง ๆ
         self.records=json.loads(DATA.read_text(encoding='utf-8')) if DATA.exists() else []; self.selected_index=None; self.selected_key=None; self.refresh_records()
