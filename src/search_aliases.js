@@ -35,3 +35,29 @@ export function searchableText(record) {
   const aliases = searchAliases[record.institution] || [];
   return [record.faculty, record.institution, ...aliases].filter(Boolean).join(' ').toLowerCase();
 }
+const FACULTY_CATEGORY_RULES = [
+  [/^คณะวิทยาศาสตร์และเทคโนโลยี/, 'คณะวิทยาศาสตร์'],
+  [/^คณะวิทยาศาสตร์กับเทคโนโลยี/, 'คณะวิทยาศาสตร์'],
+  [/^คณะวิศวกรรมศาสตร์และเทคโนโลยี/, 'คณะวิศวกรรมศาสตร์'],
+  [/^คณะบริหารธุรกิจและการบัญชี/, 'คณะบริหารธุรกิจ'],
+  [/^คณะครุศาสตร์และการพัฒนามนุษย์/, 'คณะครุศาสตร์'],
+  [/^คณะมนุษยศาสตร์และสังคมศาสตร์/, 'คณะมนุษยศาสตร์'],
+  [/^คณะสาธารณสุขศาสตร์และสิ่งแวดล้อม/, 'คณะสาธารณสุขศาสตร์'],
+];
+const FACULTY_INTERSECTION_BASES = [
+  'คณะวิทยาศาสตร์', 'คณะวิศวกรรมศาสตร์', 'คณะบริหารธุรกิจ', 'คณะบัญชี',
+  'คณะครุศาสตร์', 'คณะศึกษาศาสตร์', 'คณะมนุษยศาสตร์', 'คณะศิลปศาสตร์',
+  'คณะนิติศาสตร์', 'คณะรัฐศาสตร์', 'คณะเศรษฐศาสตร์', 'คณะสาธารณสุขศาสตร์',
+  'คณะเกษตรศาสตร์', 'คณะพยาบาลศาสตร์', 'คณะเภสัชศาสตร์', 'คณะแพทยศาสตร์',
+  'คณะสถาปัตยกรรมศาสตร์', 'คณะนิเทศศาสตร์',
+];
+export function facultyCategory(value = '') {
+  const text = String(value).replace(/\s+/g, ' ').trim();
+  const compact = text.replace(/\s+/g, '');
+  for (const [pattern, canonical] of FACULTY_CATEGORY_RULES) if (pattern.test(compact)) return canonical;
+  for (const base of FACULTY_INTERSECTION_BASES) {
+    const compactBase = base.replace(/\s+/g, '');
+    if (compact.startsWith(`${compactBase}และ`) || compact.startsWith(`${compactBase}กับ`)) return base;
+  }
+  return text;
+}
