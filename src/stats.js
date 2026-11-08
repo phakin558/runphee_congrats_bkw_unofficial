@@ -1,5 +1,6 @@
 import './styles.css';
 import { logoUrl, setLogoOverrides } from './logos.js';
+import { getStudentData } from './studentApi.js';
 const esc = s => String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function renderInteractivePie(items,total,palette){
   const box=document.querySelector('.pie-chart');if(!box)return;
@@ -13,12 +14,13 @@ function renderInteractivePie(items,total,palette){
 }
 document.querySelector('#app').innerHTML='<main class="loading-shell"><div class="loading-orbit"></div><h1>กำลังเตรียมข้อมูลสถิติ</h1><p>กำลังโหลดและจัดเรียงข้อมูลการศึกษาต่อ...</p></main>';
 let records=[], albums={}, years=[], selected='all', chartMode='institution';
-fetch('./data_sources.json').then(r=>r.ok?r.json():{}).catch(()=>({})).then(sources=>{const base=sources.baseUrl||'';const get=(key,fallback)=>{const configured=import.meta.env.DEV?fallback:base+(sources[key]||fallback);const urls=[configured,fallback].filter((url,index,list)=>url&&!list.slice(0,index).includes(url));return urls.reduce((promise,url)=>promise.then(value=>value??fetch(url).then(r=>r.ok?r.json():null).catch(()=>null)),Promise.resolve(null)).then(value=>value||{})};return Promise.all([get('imageMetadata','./image_metadata.json'),get('albumSources','./album_sources.json'),get('institutionLogos','./institution_logos.json')])}).then(([data,albumData,logos])=>{
+fetch('./data_sources.json').then(r=>r.ok?r.json():{}).catch(()=>({})).then(sources=>{const base=sources.baseUrl||'';const get=(key,fallback)=>{const configured=import.meta.env.DEV?fallback:base+(sources[key]||fallback);const urls=[configured,fallback].filter((url,index,list)=>url&&!list.slice(0,index).includes(url));return urls.reduce((promise,url)=>promise.then(value=>value??fetch(url).then(r=>r.ok?r.json():null).catch(()=>null)),Promise.resolve(null)).then(value=>value||{})};return Promise.all([getStudentData(),get('albumSources','./album_sources.json')])}).then(([data,albumData])=>{
   records=Array.isArray(data)?data.filter(r=>r&&typeof r==='object'):[];
   albums=albumData&&typeof albumData==='object'?albumData:{};
   years=[...new Set(records.map(r=>r.year).filter(Boolean))].sort((a,b)=>b-a);
-  setLogoOverrides(logos&&typeof logos==='object'?logos:{}); render();
-}).catch(e=>document.querySelector('#app').innerHTML=`<p class="p-8 text-red-700">โหลดสถิติไม่สำเร็จ: ${esc(e.message)}</p>`);
+  const recordLogos=Object.fromEntries(records.filter(r=>r.institution&&r.logoUrl).map(r=>[r.institution,r.logoUrl]));
+  setLogoOverrides(recordLogos); render(); updateRankingForMode();
+}).catch(e=>document.querySelector('#app').innerHTML=`<main class="loading-shell error"><h1>โหลดสถิติไม่สำเร็จ</h1><p>${esc(e.message)}</p><button class="hero-primary" onclick="location.reload()">ลองใหม่</button></main>`);
 function render(){
   const filtered=selected==='all'?records:records.filter(r=>String(r.year)===String(selected));
   const counts=new Map(); filtered.forEach(r=>{if(r.institution&&r.institution!=='ไม่ระบุจากภาพ')counts.set(r.institution,(counts.get(r.institution)||0)+1)});
@@ -31,8 +33,8 @@ function render(){
   const chartCounts=new Map();filtered.forEach(r=>{const value=chartMode==='faculty'?r.faculty:r.institution;if(value&&value!=='ไม่ระบุจากภาพ')chartCounts.set(value,(chartCounts.get(value)||0)+1)});
   const chartSorted=[...chartCounts].sort((a,b)=>b[1]-a[1]); const chartTop=chartSorted.slice(0,8); const chartOther=chartSorted.slice(8).reduce((n,[,c])=>n+c,0); if(chartOther)chartTop.push(['อื่น ๆ',chartOther]); const chartTotal=chartTop.reduce((n,[,c])=>n+c,0)||1; const palette=['#3730a3','#2563eb','#0891b2','#0d9488','#16a34a','#ca8a04','#ea580c','#db2777','#64748b']; let angle=0; const stops=chartTop.map(([name,count],i)=>{const start=angle;angle+=count/chartTotal*360;return `${palette[i%palette.length]} ${start}deg ${angle}deg`}).join(','); const chartLegend=chartTop.map(([name,count],i)=>`<div class="pie-legend-row"><i style="background:${palette[i%palette.length]}"></i><span>${esc(name)}</span><b>${count} · ${(count/chartTotal*100).toFixed(1)}%</b></div>`).join('');
   document.querySelector('.stats-wrap').insertAdjacentHTML('beforeend',`<section class="pie-panel"><div class="pie-heading"><div><h2>สัดส่วนข้อมูลแบบ Pie Chart</h2><p>เลือกมุมมองที่ต้องการเปรียบเทียบ</p></div><select id="chart-mode"><option value="institution" ${chartMode==='institution'?'selected':''}>ตามมหาวิทยาลัย / สถาบัน</option><option value="faculty" ${chartMode==='faculty'?'selected':''}>ตามคณะ</option></select></div><div class="pie-layout"><div class="pie-chart" style="background:conic-gradient(${stops})"><span>${chartTotal}<small>รายการ</small></span></div><div class="pie-legend">${chartLegend||'<p>ยังไม่มีข้อมูล</p>'}</div></div></section><section class="insight-grid"><div class="insight-panel"><h2>ภาพรวมตามประเภทสถาบัน</h2><p>ช่วยดูว่ารุ่นพี่กระจายอยู่ในสถาบันประเภทใด</p><div class="insight-types">${typeCards}</div></div><div class="insight-panel"><h2>แนวโน้มจำนวนผู้ติดรายปี</h2><p>เปรียบเทียบจำนวนรูปในแต่ละปี</p><div class="trend-list">${trend}</div></div></section>`);
-  document.querySelector('#stats-year').onchange=e=>{selected=e.target.value;render()};
-  document.querySelector('#chart-mode').onchange=e=>{chartMode=e.target.value;render()};
+  document.querySelector('#stats-year').onchange=e=>{selected=e.target.value;render();updateRankingForMode()};
+  document.querySelector('#chart-mode').onchange=e=>{chartMode=e.target.value;render();updateRankingForMode()};
   renderInteractivePie(chartTop,chartTotal,palette);
   const hero=document.querySelector('.hero-inner');if(hero){hero.querySelector('h1').textContent='สถิติการศึกษาต่อ';hero.querySelector('p').textContent='เลือกดูข้อมูลแยกตามปี หรือรวมข้อมูลทุกปี'}
   const heading=document.querySelector('.ranking-title h2');if(heading)heading.textContent=selected==='all'?'รวมทุกปี: มหาวิทยาลัย/สถาบัน':`ปี ${selected}: มหาวิทยาลัย/สถาบัน`;
@@ -40,6 +42,18 @@ function render(){
   const pieTitle=document.querySelector('.pie-heading h2');if(pieTitle)pieTitle.textContent='สัดส่วนข้อมูล';
   const typeNote=document.querySelector('.insight-panel p');if(typeNote)typeNote.textContent='จำแนกข้อมูลตามประเภทของสถาบัน';
   const trendTitle=[...document.querySelectorAll('.insight-panel h2')].find(x=>x.textContent.includes('แนวโน้ม'));if(trendTitle){trendTitle.textContent='แนวโน้มจำนวนรายการรายปี';trendTitle.nextElementSibling.textContent='เปรียบเทียบจำนวนข้อมูลที่รวบรวมได้ในแต่ละปี'}
+}
+function updateRankingForMode(){
+  const filtered=selected==='all'?records:records.filter(r=>String(r.year)===String(selected));
+  const facultyMode=chartMode==='faculty', key=facultyMode?'faculty':'institution', label=facultyMode?'คณะ / สาขา':'มหาวิทยาลัย / สถาบัน';
+  const counts=new Map();filtered.forEach(r=>{const value=String(r[key]||'').trim();if(value&&value!=='ไม่ระบุจากภาพ')counts.set(value,(counts.get(value)||0)+1)});
+  const ranking=[...counts].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],'th')), total=ranking.reduce((n,[,c])=>n+c,0), max=ranking[0]?.[1]||1;
+  const title=document.querySelector('.ranking-title h2'), note=document.querySelector('.ranking-title p'), totalEl=document.querySelector('.ranking-title b'), list=document.querySelector('.ranking-list');
+  if(!title||!note||!totalEl||!list)return;
+  title.textContent=selected==='all'?`รวมทุกปี: ${label}`:`ปี ${selected}: ${label}`;
+  note.textContent=facultyMode?'จำนวนและสัดส่วนของคณะ / สาขาในช่วงที่เลือก':'โลโก้หน้าชื่อ · จำนวนและสัดส่วนของสถาบันในช่วงที่เลือก';
+  totalEl.textContent=`${total} รายการ`;
+  list.innerHTML=ranking.length?ranking.map(([name,count])=>{const pct=total?count/total*100:0;return `<div class="rank-row">${facultyMode?'':`<img class="rank-logo" src="${logoUrl(name)}" alt="" loading="lazy">`}<div class="rank-main"><div class="rank-label"><span>${esc(name)}</span><strong>${count} คน · ${pct.toFixed(1)}%</strong></div><div class="rank-track"><i style="width:${count/max*100}%"></i></div></div></div>`}).join(''):'<p class="text-slate-500">ยังไม่มีข้อมูลสำหรับช่วงนี้</p>';
 }
 let statsFacebookLogo='';fetch('./site_settings.json').then(r=>r.ok?r.json():{}).then(settings=>{statsFacebookLogo=settings.facebookLogo||'';document.querySelector('.data-sources')?.remove();statsSourceObserver();}).catch(()=>{});
 const statsSourceObserver=()=>{const hero=document.querySelector('.hero-inner');if(hero&&!hero.querySelector('.data-sources'))hero.insertAdjacentHTML('beforeend','<div class="data-sources"><strong>แหล่งที่มาของข้อมูล</strong><a href="https://www.facebook.com/bkwschoolpr" target="_blank" rel="noreferrer">'+(statsFacebookLogo?'<img class="social-icon social-image" src="'+esc(statsFacebookLogo)+'" alt="" aria-hidden="true">':'')+'เพจโรงเรียนบ้านเขว้าวิทยายน</a><a href="https://www.facebook.com/SaparBKWSchool" target="_blank" rel="noreferrer">'+(statsFacebookLogo?'<img class="social-icon social-image" src="'+esc(statsFacebookLogo)+'" alt="" aria-hidden="true">':'')+'เพจงานแนะแนวและประชาสัมพันธ์</a></div>')};const statsSourceMutationObserver=new MutationObserver(statsSourceObserver);statsSourceMutationObserver.observe(document.querySelector('#app'),{childList:true,subtree:true});

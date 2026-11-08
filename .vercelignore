@@ -1,6 +1,11 @@
 # Local-only admin tools and source data
 admin/
 admin_backups/
+image_processing/
+mockup.html
+Code.gs
+Admin.html
+GAS_SETUP.md
 data_images.json
 ocr_text.json
 image_metadata.json

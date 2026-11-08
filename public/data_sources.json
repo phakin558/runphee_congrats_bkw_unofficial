@@ -1,7 +1,6 @@
 {
-  "imageMetadata": "https://raw.githubusercontent.com/phakin558/runphee_congrats_bkw_unofficial/main/public/image_metadata.json",
+  "gasWebAppUrl": "https://script.google.com/macros/s/AKfycbyo34wDwew53xLUHmMCvyJ0NWfOkHasa861pfqLErePAGvDaMUutkcdILEhxf6JVCUo/exec",
   "facebookImages": "https://raw.githubusercontent.com/phakin558/runphee_congrats_bkw_unofficial/main/public/facebook_images.json",
-  "institutionLogos": "https://raw.githubusercontent.com/phakin558/runphee_congrats_bkw_unofficial/main/public/institution_logos.json",
   "albumSources": "https://raw.githubusercontent.com/phakin558/runphee_congrats_bkw_unofficial/main/public/album_sources.json",
   "siteSettings": "https://raw.githubusercontent.com/phakin558/runphee_congrats_bkw_unofficial/main/public/site_settings.json"
 }
